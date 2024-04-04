@@ -80,7 +80,14 @@ SELECT
 FROM fortune_companies
 GROUP BY healthcare_benefits;
 
---This a littl emore specifically. Wanted to see if it correlated to companies with benefits generating more revenue. Only need 1 decimal point.
+# Which companies have healthcare benefits *and* at least 20 paid time off days?
+SELECT company_name
+FROM fortune_companies
+WHERE paid_time_off_days>20
+AND healthcare_benefits=1
+;
+
+--This a little more specific. Wanted to see if it correlated to companies with benefits generating more revenue. Only need 1 decimal point.
 SELECT 
     revenue_category,
     healthcare_status,
