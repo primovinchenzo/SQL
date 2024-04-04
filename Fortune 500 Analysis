@@ -56,76 +56,54 @@ VALUES
     ('Company JJ', 'Manufacturing', 370.0, 3100, 1, 20, 12, 7.6),
     ('Company KK', 'Healthcare', 150.2, 3400, 0, 16, 8, 5.3);
 
-
+#Query will retrieve all columns and rows from the specified table, giving you a comprehensive view of the data it contains.
 SELECT *
 from fortune_companies;
--- My girlfriend is applying at the same places i am and we're expecting. Find companies with the highest maternity leave weeks.
-SELECT 
-    company_name,
-    maternity_leave_weeks
+
+# My girlfriend is applying at the same places I am and we're expecting. Find companies with the highest maternity leave weeks.
+SELECT company_name, maternity_leave_weeks
 FROM fortune_companies
 ORDER BY maternity_leave_weeks DESC;
 
 --I do enjoy my vacation time. Curious about the most paid days off.
-SELECT 
-    company_name,
-    paid_time_off_days
+SELECT company_name,paid_time_off_days
 FROM fortune_companies
 ORDER BY paid_time_off_days DESC;
 
---Are companies making more if they have healthare benefits? Compare the average revenue of companies providing healthcare benefits versus those not providing
+# Which companies have healthcare benefits and at least 20 paid time off days?
+SELECT company_name
+FROM fortune_companies
+WHERE paid_time_off_days>=20
+AND healthcare_benefits=1;
+
+#Are companies making more if they have healthare benefits? Compare the average revenue of companies providing healthcare benefits versus those not providing
 SELECT 
-    CASE WHEN healthcare_benefits = 1 THEN 'With Healthcare Benefits' ELSE 'Without Healthcare Benefits' END AS healthcare_status,
-    AVG(revenue) AS avg_revenue
+CASE WHEN healthcare_benefits = 1 THEN 'With Healthcare Benefits' ELSE 'Without Healthcare Benefits' END AS healthcare_status,
+AVG(revenue) AS avg_revenue
 FROM fortune_companies
 GROUP BY healthcare_benefits;
 
-# Which companies have healthcare benefits *and* at least 20 paid time off days?
-SELECT company_name
-FROM fortune_companies
-WHERE paid_time_off_days>20
-AND healthcare_benefits=1
-;
-
---This a little more specific. Wanted to see if it correlated to companies with benefits generating more revenue. Only need 1 decimal point.
-SELECT 
-    revenue_category,
-    healthcare_status,
-    ROUND(AVG(avg_revenue), 1) AS avg_revenue
-FROM (
-    SELECT 
-        CASE WHEN revenue > 250 THEN 'Above $250M Revenue' ELSE 'Below $250M Revenue' END AS revenue_category,
-        CASE WHEN healthcare_benefits = 1 THEN 'With Healthcare Benefits' ELSE 'Without Healthcare Benefits' END AS healthcare_status,
-        revenue AS avg_revenue
-    FROM fortune_companies
-) AS subquery
-GROUP BY revenue_category, healthcare_status
-HAVING AVG(avg_revenue) > 200;
-
---Compare average revenue and average number of employees across industries
-SELECT 
-    industry,
-    AVG(revenue) AS avg_revenue,
-    AVG(employees) AS avg_employees
+#Compare average revenue and average number of employees across industries
+SELECT industry,
+AVG(revenue) AS avg_revenue,
+AVG(employees) AS avg_employees
 FROM fortune_companies
 GROUP BY industry
 ORDER BY avg_revenue DESC;
 
-SELECT 
-    CASE WHEN healthcare_benefits = 1 THEN 'With Healthcare Benefits' ELSE 'Without Healthcare Benefits' END AS healthcare_status,
-    industry,
-    ROUND(AVG(revenue), 1) AS avg_revenue,
-    ROUND(AVG(employees), 1) AS avg_employees
+#Compare the average revenue of companies providing healthcare benefits versus those not providing
+SELECT CASE WHEN healthcare_benefits = 1 THEN 'With Healthcare Benefits' ELSE 'Without Healthcare Benefits' END AS healthcare_status, industry,
+ROUND(AVG(revenue), 1) AS avg_revenue,
+ROUND(AVG(employees), 1) AS avg_employees
 FROM fortune_companies
 GROUP BY healthcare_status, industry;
 
 
 # I liked one of yours but i wanted to tweak it a little bit
-SELECT
-company_name,
+SELECT company_name,
 CASE 
-  WHEN maternity_leave_weeks >= 10 THEN 'mother friendly'
-  WHEN maternity_leave_weeks >= 8 THEN 'acceptable'
-  ELSE 'abysmal'
+WHEN maternity_leave_weeks >= 10 THEN 'mother friendly'
+WHEN maternity_leave_weeks >= 8 THEN 'acceptable'  
+ELSE 'abysmal'
 END as mother_friendliness
 FROM fortune_companies;
