@@ -129,7 +129,7 @@ GROUP BY product
 ORDER BY sum(quantity*price) desc 
 LIMIT 1
 
-# EXPLANATION #1 
+# EXPLANATION 1 
 # "Why do we use SUM(quantity*price) instead of SUM(quantity)*price?"
 # In this question, we are using GROUP BY product. 
 # The price of each individual product doesn't change. 
@@ -144,7 +144,7 @@ product
 FROM BIT_DB.JanSales
 group by product
 
-# EXPLANATION #2
+# EXPLANATION 2
 # "Why can't I just use sum(price) instead of sum(quantity*price)?"
 # In this case, there's no difference between sum(price) and sum(quantity*price).
 # However, the correct answer is sum(quantity*price), because revenue is calculated by multiplying the price of the product by the number sold. 
