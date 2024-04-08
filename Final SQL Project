@@ -107,3 +107,14 @@ SELECT FirstName, LastName, CustomerId, Country
 FROM chinook.customers 
 WHERE Country = "USA";
 
+#16 Find the Invoices of customers who are from Czech Republic. The resulting table should show the customer's full name, Invoice ID, Date of the invoice, and billing country.
+SELECT cust.FirstName, cust.LastName, inv.InvoiceId, inv.BillingCountry, inv.InvoiceDate
+FROM chinook.invoices as inv 
+LEFT JOIN chinook.customers as cust 
+on inv.CustomerId = cust.CustomerId 
+WHERE inv.BillingCountry = "Brazil";
+
+#17 How many Invoices were there in 2010?
+SELECT COUNT(*)
+FROM chinook.Invoices
+WHERE InvoiceDate BETWEEN '2010-01-01' AND '2010-12-31';
